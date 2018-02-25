@@ -1,40 +1,65 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <style>
-
     .flex-container {
-      display: flex;  
+      display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       text-align: center;
     }
 
-    .flex-container > * {
+    .flex-container>* {
       margin: 15px;
       width: 220px;
       height: 300px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
     }
-
   </style>
   <script>
+    // on load
+    window.onload = function () {
+      document.getElementById("button2").onclick = function () { myFunction2(document.getElementById("demo"), "Hello Again"); };
+
+      getCurTemp('seattle');
+    }
 
     function myFunction() {
       document.getElementById("demo").innerHTML = "Hello JavaScript";
     }
-    
+
     function myFunction2(el, text) {
       el.innerHTML = text;
     }
-    
-    window.onload = function(){
-      //myFunction();
-      document.getElementById("button2").onclick = function(){ myFunction2( document.getElementById("demo"), "Hello Again"); };
+
+    // HTTP GET
+    function getCurTemp() {
+      const url = "https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='seattle, wa')&format=json";
+      httpGET(url, function (response) {
+        console.log(response.query.results.channel.item.condition.temp);
+        let el = document.createElement('div');
+        el.innerHTML = `Seattle temp: ${response.query.results.channel.item.condition.temp} degrees`;
+        document.getElementById('seattleTemp').appendChild(el);
+      });
     }
+    function httpGET(url, success) {
+      var oReq = new XMLHttpRequest();
+      oReq.onload = function () {
+        console.log('Inside the onload event');
+        success(oReq.response);
+      };
+      oReq.onreadystatechange = function () {
+        console.log('Inside the onreadystatechange event with readyState: ', oReq.readyState);
+      };
+      oReq.open('GET', url, true);
+      oReq.responseType = 'json';
+      oReq.send();
+    };
 
   </script>
 </head>
+
 <body>
 
   <div class="flex-container">
@@ -42,7 +67,9 @@
     <button onclick="myFunction()">click me</button>
     <div id="demo"></div>
     <button id="button2">and click me</button>
+    <div id="seattleTemp"></div>
   </div>
 
 </body>
+
 </html>
