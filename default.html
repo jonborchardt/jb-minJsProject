@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+
+    .flex-container {
+      display: flex;  
+      flex-direction: row;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .flex-container > * {
+      margin: 15px;
+      width: 220px;
+      height: 300px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
+    }
+
+  </style>
+  <script>
+
+    function myFunction() {
+      document.getElementById("demo").innerHTML = "Hello JavaScript";
+    }
+    
+    function myFunction2(el, text) {
+      el.innerHTML = text;
+    }
+    
+    window.onload = function(){
+      //myFunction();
+      document.getElementById("button2").onclick = function(){ myFunction2( document.getElementById("demo"), "Hello Again"); };
+    }
+
+  </script>
+</head>
+<body>
+
+  <div class="flex-container">
+    <div>HELLO</div>
+    <button onclick="myFunction()">click me</button>
+    <div id="demo"></div>
+    <button id="button2">and click me</button>
+  </div>
+
+</body>
+</html>
